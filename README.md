@@ -31,4 +31,10 @@ In This Project we are gonna show how blockchain technology can make the process
 <img src="interface-1.png"> <br/>
 <img src="interface-2.png"> <br/>
 
-<img src="BlockChain-in-Realestate.pdf"> <br/>
+## Research Paper Published
+International Journal for Modern Trends in Science and Technology, 8(06): 203-206, 2022
+Copyright © 2022 International Journal for Modern Trends in Science and Technology 
+ISSN: 2455-3778 online
+DOI: https://doi.org/10.46501/IJMTST0806033
+Available online at: http://www.ijmtst.com/vol8issue06.html
+Blockchain in Real Estate
