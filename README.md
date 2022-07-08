@@ -20,3 +20,10 @@ In This Project we are gonna show how blockchain technology can make the process
 - Using Web3 JS JavaScript library to Interact with Blockchain Environment.
 - Using Ganache & Truffle to create environment that allow us to Test, Run and Deploy without Remix IDE.
 - Using ReactJS to create User Interface where user can interact with smart contract.
+
+# Key Points that we can Implement in this projects as a Future work.
+- We can Implement IPFS ( Inter Planatery File System ) to store RealEstate Data in a Decentralised manner.
+- Geolocation Integration for adding Exact Location with Hashes.
+- To Implement a Decentralised Monetary Authority to make sure of authenticity of transactions.
+- Replace Ethereum with other newly implemented Network Just like Neo blockchain which is easy to implement.
+
