@@ -38,3 +38,4 @@ ISSN: 2455-3778 online
 DOI: https://doi.org/10.46501/IJMTST0806033
 Available online at: http://www.ijmtst.com/vol8issue06.html
 Blockchain in Real Estate
+Paper Direct Link: http://www.ijmtst.com/volume8/issue06/33.IJMTST0806053.pdf
