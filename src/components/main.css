@@ -1,19 +1,38 @@
+/* Improved table styles */
 .table {
   border-collapse: collapse;
-  margin: 25px e;
-  font-size: 1em;
+  margin: 2rem auto;  /* Center the table horizontally with rem unit */
+  font-size: 1rem;
   min-width: 400px;
-  border: 0;
 }
 
+.table th,
+.table td {
+  background-color: #e0e0e0;  /* Light gray background for all cells */
+  padding: 1rem;  /* Consistent padding for better readability */
+  border: 1px solid #ddd;  /* Light border to separate cells */
+  text-align: left;
+}
+
+/* Enhanced table header styling */
 .table thead tr {
-  background-color: O#009879;
-  color: 1#ffffff;
+  background-color: #009879;  /* Consistent green from Response A */
+  color: #fff;  /* White text from Response B */
   text-align: left;
   font-weight: bold;
 }
 
+/* Refined button styles */
 .buy-btn {
-  border-radius: 10%;
-  border: 0;
+  border-radius: 10%;  /* Consistent border radius */
+  background-color: #009879;  /* Green button color from Response A */
+  color: #fff;  /* White text from Response B */
+  padding: 0.5rem 1rem;  /* Consistent padding */
+  border: none;  /* No border for a clean look */
+  cursor: pointer;  /* Indicate interactivity */
+}
+
+/* Optional: Hover effect for visual feedback */
+.buy-btn:hover {
+  background-color: #007362;  /* Darker green on hover */
 }
