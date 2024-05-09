@@ -1,15 +1,14 @@
 {
-  "short_name": "Starter Kit",
-  "name": "Dapp University Starter Kit",
+  "appName": "Dapp University Starter Kit", // More descriptive
+  "shortName": "DApp Starter", // Shorter and uses acronym
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "icon-192x192.png", // Use a higher resolution icon
+      "type": "image/png", // Specify the correct image format
+      "sizes": "192x192" // Single, modern size for high-resolution displays
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "start_url": "/", // Consistent forward slash for root path
+  "theme_color": "#f0f0f0", // Lighter default theme color
+  "background_color": "#fafafa" // Slightly lighter background color
 }
