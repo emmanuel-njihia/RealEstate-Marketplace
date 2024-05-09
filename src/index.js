@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'bootstrap/dist/css/bootstrap.css'
-import App from './components/App';
-import * as serviceWorker from './serviceWorker';
+import './styles/main.css'; // Import custom CSS for better separation of concerns
+import App from './components/App'; // Import the root component
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// Optional service worker registration (consider pros and cons for your application)
+if (process.env.NODE_ENV === 'production') {
+  serviceWorker.register();
+} else {
+  serviceWorker.unregister();
+}
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const rootElement = document.getElementById('root');
+ReactDOM.render(<App />, rootElement);
