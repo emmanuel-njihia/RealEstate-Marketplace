@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Web3 from "web3";
 import logo from "../logo.png";
 import "./App.css";
@@ -6,110 +6,112 @@ import Marketplace from "../abis/Marketplace.json";
 import Navbar from "./Navbar";
 import Main from "./Main";
 
-class App extends Component {
-  async componentWillMount() {
-    await this.loadWeb3();
-    await this.loadBlockchainData();
-  }
+const App = () => {
+  const [web3, setWeb3] = useState(null);
+  const [account, setAccount] = useState(null);
+  const [marketplace, setMarketplace] = useState(null);
+  const [productCount, setProductCount] = useState(0);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  async loadWeb3() {
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      await window.ethereum.enable();
-    } else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider);
-    } else {
-      window.alert(
-        "Non-Ethereum browser detected. You should consider trying MetaMask!"
-      );
-    }
-  }
-
-  async loadBlockchainData() {
-    const web3 = window.web3;
-    // Load account
-    const accounts = await web3.eth.getAccounts();
-    this.setState({ account: accounts[0] });
-    const networkId = await web3.eth.net.getId();
-    const networkData = Marketplace.networks[networkId];
-    if (networkData) {
-      const marketplace = web3.eth.Contract(
-        Marketplace.abi,
-        networkData.address
-      );
-      this.setState({ marketplace });
-      const productCount = await marketplace.methods.productCount().call();
-      this.setState({ productCount });
-      // Load products
-      for (var i = 1; i <= productCount; i++) {
-        const product = await marketplace.methods.products(i).call();
-        this.setState({
-          products: [...this.state.products, product],
-        });
+  useEffect(() => {
+    const loadBlockchainData = async () => {
+      if (window.ethereum) {
+        const web3 = new Web3(window.ethereum);
+        try {
+          await window.ethereum.enable();
+          setWeb3(web3);
+        } catch (error) {
+          // Handle user rejection of permission request
+          console.error("User denied account access:", error);
+          window.alert(
+            "Non-Ethereum browser detected. You should consider trying MetaMask!"
+          );
+        }
+      } else if (window.web3) {
+        setWeb3(new Web3(window.web3.currentProvider));
+      } else {
+        window.alert(
+          "Non-Ethereum browser detected. You should consider trying MetaMask!"
+        );
       }
-      this.setState({ loading: false });
-    } else {
-      window.alert("Marketplace contract not deployed to detected network.");
-    }
-  }
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      account: "",
-      productCount: 0,
-      products: [],
-      loading: true,
+      if (web3) {
+        const networkId = await web3.eth.net.getId();
+        const networkData = Marketplace.networks[networkId];
+        if (networkData) {
+          const marketplaceContract = web3.eth.Contract(
+            Marketplace.abi,
+            networkData.address
+          );
+          setMarketplace(marketplaceContract);
+
+          const accounts = await web3.eth.getAccounts();
+          setAccount(accounts[0]);
+
+          const productCount = await marketplaceContract.methods
+            .productCount()
+            .call();
+          setProductCount(productCount);
+
+          const fetchedProducts = [];
+          for (let i = 1; i <= productCount; i++) {
+            const product = await marketplaceContract.methods.products(i).call();
+            fetchedProducts.push(product);
+          }
+          setProducts(fetchedProducts);
+        } else {
+          window.alert("Marketplace contract not deployed to detected network.");
+        }
+      }
+      setLoading(false);
     };
 
-    this.createProduct = this.createProduct.bind(this);
-    this.purchaseProduct = this.purchaseProduct.bind(this);
-  }
+    loadBlockchainData();
+  }, []);
 
-  createProduct(name, price) {
-    this.setState({ loading: true });
-    this.state.marketplace.methods
+  const createProduct = (name, price) => {
+    setLoading(true);
+    marketplace.methods
       .createProduct(name, price)
-      .send({ from: this.state.account })
+      .send({ from: account })
       .once("receipt", (receipt) => {
-        this.setState({ loading: false });
+        setLoading(false);
       });
-  }
+  };
 
-  purchaseProduct(id, price) {
-    this.setState({ loading: true });
-    this.state.marketplace.methods
+  const purchaseProduct = (id, price) => {
+    setLoading(true);
+    marketplace.methods
       .purchaseProduct(id)
-      .send({ from: this.state.account, value: price })
+      .send({ from: account, value: price })
       .once("receipt", (receipt) => {
-        this.setState({ loading: false });
+        setLoading(false);
       });
-  }
+  };
 
-  render() {
-    return (
-      <div>
-        <Navbar account={this.state.account} />
-        <div className="container-fluid mt-5">
-          <div className="row">
-            <main role="main" className="col-lg-12 d-flex">
-              {this.state.loading ? (
-                <div id="loader" className="text-center">
-                  <p className="text-center">Loading...</p>
-                </div>
-              ) : (
-                <Main
-                  products={this.state.products}
-                  createProduct={this.createProduct}
-                  purchaseProduct={this.purchaseProduct}
-                />
-              )}
-            </main>
-          </div>
+  return (
+    <div>
+      <Navbar account={account} />
+      <div className="container-fluid mt-5">
+        <div className="row">
+          <main role="main" className="col-lg-12 d-flex">
+            {loading ? (
+              <div id="loader" className="text-center">
+                <p className="text-center">Loading...</p>
+              </div>
+            ) : (
+              <Main
+                products={products}
+                createProduct={createProduct}
+                purchaseProduct={purchaseProduct}
+              />
+            )}
+          </main>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default App;
